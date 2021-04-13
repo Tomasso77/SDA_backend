@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Nasze filmy!
+{% endblock %}
+
+{% block content %}
+  <h1>Welcome to HollyMovies!</h1>
+  <ul>
+    {% for movie in movies %}
+    <li>
+     [id={{ movie.id }}]  {{ movie.title }} ({{ movie.released.year }}) - {{ movie.genre.name }}
+    </li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}
