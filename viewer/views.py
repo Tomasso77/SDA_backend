@@ -1,21 +1,43 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from viewer.models import Movie, Genre
+from django.views import View
+from django.views.generic import TemplateView, ListView
 
 
-def movies(request):
-    gatunek = request.GET.get('gatunek', '')
-    return render(
-        request, template_name='movies.html',
-        context={'movies': Movie.objects.filter(genre__name=gatunek).order_by('-released')}
-    )
+class MoviesView(ListView):
+    template_name = 'movies.html'
+    model = Movie
+    paginate_by = 20
 
 
-def hello(request, s0):
+# extra_context = {'object_list': Movie.objects.all()}
+
+# class MoviesView(TemplateView):
+#     template_name = 'movies.html'
+#     extra_context = {'movies': Movie.objects.all().order_by('-released'),
+#                      'title': "Wynik TemplateView"}
+
+
+# class MoviesView(View):
+#     def get(self, request):
+#         return render(
+#             request, template_name='movies.html',
+#             context={'movies': Movie.objects.all().order_by('-released')}
+#         )
+
+# def movies(request):
+#     return render(
+#         request, template_name='movies.html',
+#         context={'movies': Movie.objects.all().order_by('-released')}
+#     )
+
+
+def hello(request):
     s1 = request.GET.get('s1', '')
     return render(
         request, template_name='hello.html',
-        context={'adjectives': [s0, s1, 'beautiful', 'wonderful'],
+        context={'adjectives': [ s1, 'beautiful', 'wonderful'],
                  'title': s1}
         )
 
