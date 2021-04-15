@@ -2,13 +2,19 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from viewer.models import Movie, Genre
 from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, FormView
+from viewer.forms import MovieForm
 
 
 class MoviesView(ListView):
     template_name = 'movies.html'
     model = Movie
     paginate_by = 20
+
+
+class MovieCreateView(FormView):
+    template_name = "form.html"
+    form_class = MovieForm
 
 
 # extra_context = {'object_list': Movie.objects.all()}
