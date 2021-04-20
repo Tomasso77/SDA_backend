@@ -4,10 +4,15 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from viewer.models import Movie, Genre
 from django.views import View
-from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView, DetailView
 from viewer.forms import MovieForm
 
 LOGGER = getLogger()
+
+
+class MovieDetailsView(DetailView):
+    template_name = 'detail.html'
+    model = Movie
 
 
 class MovieDeleteView(DeleteView):
