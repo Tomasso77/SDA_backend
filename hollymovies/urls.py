@@ -26,4 +26,3 @@ urlpatterns = [
     path('movie/update/<int:pk>/', MovieUpdateView.as_view(), name="movie_update"),
     path('movie/delete/<int:pk>/', MovieDeleteView.as_view(), name="movie_delete"),
 ]
-# C R (List, Retrive) UD

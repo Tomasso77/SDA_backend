@@ -4,13 +4,22 @@
 {% endblock %}
 
 {% block content %}
+
+{% autoescape on %}
 <h1>{{ object.title }}</h1>
 {{ object.genre.name }} ({{ object.released }})<br>
 <hr>
-{{ object.description }}
+{{ object.description | linebreaksbr }}
 <hr>
 Rating: {{ object.rating }}/9 <br>
 <br>
+<!--{{ lista | join:" &ndash;&gt; " }}-->
+{{ lista | length }} <br>
+{{ lista | slice:"5:" }}
+<br>
+
+{% endautoescape %}
+
 <a href="{% url 'movie_update' object.id %}" class="btn btn-success">Update</a>
 <a href="{% url 'movie_delete' object.id %}" class="btn btn-danger">Delete</a>
 
