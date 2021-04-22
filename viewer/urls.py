@@ -14,14 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from viewer.views import (hello,
-                          IndexView
+from django.urls import path
+from viewer.views import (
+                          MoviesView,
+                          MovieCreateView,
+                          MovieUpdateView,
+                          MovieDeleteView,
+                          MovieDetailsView,
                           )
 
+app_name = 'viewer'
+
 urlpatterns = [
-    path('', IndexView.as_view(), name="index"),
-    path('admin/', admin.site.urls),
-    path('hello/', hello, name='hello'),
-    path('viewer/', include('viewer.urls', namespace='viewer')),
+    path('movie/', MoviesView.as_view(), name="movie"),
+    path('movie/<int:pk>/', MovieDetailsView.as_view(), name="movie_details"),
+    path('movie/create/', MovieCreateView.as_view(), name="movie_create"),
+    path('movie/update/<int:pk>/', MovieUpdateView.as_view(), name="movie_update"),
+    path('movie/delete/<int:pk>/', MovieDeleteView.as_view(), name="movie_delete"),
 ]

@@ -4,10 +4,24 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from viewer.models import Movie, Genre
 from django.views import View
-from django.views.generic import TemplateView, ListView, FormView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import (
+                                  TemplateView,
+                                  ListView,
+                                  FormView,
+                                  CreateView,
+                                  UpdateView,
+                                  DeleteView,
+                                  DetailView
+                                  )
 from viewer.forms import MovieForm
 
 LOGGER = getLogger()
+
+
+class IndexView(TemplateView):
+    template_name = 'index.html'
+#     extra_context = {'movies': Movie.objects.all().order_by('-released'),
+#                      'title': "Wynik TemplateView"}
 
 
 class MovieDetailsView(DetailView):
@@ -19,14 +33,14 @@ class MovieDetailsView(DetailView):
 class MovieDeleteView(DeleteView):
     template_name = 'movie_confirm_delete.html'
     model = Movie
-    success_url = reverse_lazy('filmy')
+    success_url = reverse_lazy('movie')
 
 
 class MovieUpdateView(UpdateView):
     template_name = "form.html"
     model = Movie
     form_class = MovieForm
-    success_url = reverse_lazy("filmy")
+    success_url = reverse_lazy("movie")
 
     def form_invalid(self, form):
         LOGGER.warning('User provided invalid data while updating a movie.')
