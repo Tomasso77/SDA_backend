@@ -1,5 +1,8 @@
 from logging import getLogger
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from viewer.models import Movie, Genre
@@ -30,17 +33,17 @@ class MovieDetailsView(DetailView):
     extra_context = {'lista': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']}
 
 
-class MovieDeleteView(DeleteView):
+class MovieDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'movie_confirm_delete.html'
     model = Movie
-    success_url = reverse_lazy('movie')
+    success_url = reverse_lazy('viewer:movie')
 
 
-class MovieUpdateView(UpdateView):
+class MovieUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "form.html"
     model = Movie
     form_class = MovieForm
-    success_url = reverse_lazy("movie")
+    success_url = reverse_lazy("viewer:movie")
 
     def form_invalid(self, form):
         LOGGER.warning('User provided invalid data while updating a movie.')
@@ -54,10 +57,11 @@ class MoviesView(ListView):
 
 
 # FormView --> CreateView
-class MovieCreateView(CreateView):
+class MovieCreateView(LoginRequiredMixin, CreateView):
     template_name = "form.html"
     form_class = MovieForm
-    success_url = reverse_lazy('movie_create')
+    success_url = reverse_lazy('viewer:movie_create')
+
 
     # def form_valid(self, form):
     #     result = super().form_valid(form)
@@ -99,12 +103,15 @@ class MovieCreateView(CreateView):
 #     )
 
 
+@login_required
 def hello(request):
     s1 = request.GET.get('s1', '')
+    user = request.user
     return render(
         request, template_name='hello.html',
         context={'adjectives': [ s1, 'beautiful', 'wonderful'],
-                 'title': s1}
+                 'title': s1,
+                 'user': user }
         )
 
 
