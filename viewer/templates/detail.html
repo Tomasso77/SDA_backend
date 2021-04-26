@@ -13,9 +13,11 @@
 <hr>
 Rating: {{ object.rating }}/9 <br>
 <br>
-<!--{{ lista | join:" &ndash;&gt; " }}-->
+<!--{{ lista | length }}-->
+{% comment %}
 {{ lista | length }} <br>
 {{ lista | slice:"5:" }}
+{% endcomment %}
 <br>
 
 {% endautoescape %}
