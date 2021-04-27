@@ -1,7 +1,9 @@
 from logging import getLogger
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin,
+                                        UserPassesTestMixin)
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -21,6 +23,22 @@ from viewer.forms import MovieForm
 LOGGER = getLogger()
 
 
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+class SuperuserRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff and self.request.user.is_superuser
+
+
+class NameRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        user = self.request.user
+        return user.first_name != '' and user.last_name != ''
+
+
+
 class IndexView(TemplateView):
     template_name = 'index.html'
 #     extra_context = {'movies': Movie.objects.all().order_by('-released'),
@@ -33,11 +51,14 @@ class MovieDetailsView(DetailView):
     extra_context = {'lista': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']}
 
 
-class MovieDeleteView(PermissionRequiredMixin, DeleteView):
+class MovieDeleteView(StaffRequiredMixin, PermissionRequiredMixin, DeleteView):
     template_name = 'movie_confirm_delete.html'
     model = Movie
     success_url = reverse_lazy('viewer:movie')
     permission_required = 'viewer.delete_movie'
+
+    def test_func(self):
+        return super().test_func() and self.request.user.is_superuser
 
 
 class MovieUpdateView(PermissionRequiredMixin, UpdateView):
@@ -58,8 +79,9 @@ class MoviesView(ListView):
     paginate_by = 200
 
 
+
 # FormView --> CreateView
-class MovieCreateView(PermissionRequiredMixin, CreateView):
+class MovieCreateView(NameRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = "form.html"
     form_class = MovieForm
     success_url = reverse_lazy('viewer:movie_create')
