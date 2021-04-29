@@ -1,3 +1,7 @@
+request.POST <- 
+
+request.FILES
+
 
 model (ORM) -> tabele w DB
 

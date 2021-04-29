@@ -20,11 +20,11 @@ Rating: {{ object.rating }}/9 <br>
 {% endcomment %}
 <br>
 {% if object.image %}
-<img src="{{ object.image.url }}" height="150"><br>
+<img src="{{ object.image.url }}" height="250px"><br>
 {% endif %}
 
 {% endautoescape %}
-
+<hr>
 <a href="{% url 'viewer:movie_update' object.id %}" class="btn btn-success">Update</a>
 <a href="{% url 'viewer:movie_delete' object.id %}" class="btn btn-danger">Delete</a>
 
