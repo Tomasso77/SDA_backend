@@ -22,6 +22,7 @@ from viewer.views import (hello,
                           )
 
 urlpatterns = [
+    path('api/', include('api.urls', namespace='api')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('', IndexView.as_view(), name="index"),
     path('admin/', admin.site.urls),

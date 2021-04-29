@@ -1,3 +1,28 @@
+RESTful API
+
+/movie/ -> GET -> Read(List)
+        -> POST [JSON] -> Create
+/movie/{id}/ -> GET -> Read(Retrieve)
+           -> PUT/PATCH [JSON] -> Update / Partial Update
+           -> DELETE -> Delete
+
+
+
+JSON:
+
+{
+"title": "Shrek 2",
+"genre": 3,
+"rating": 5,
+"description": "To jest jakiś opis filmu",
+"released": "2020-01-05",
+"image":"http:/127.0.0.1:8000/movie/movie_40/gladiator.jpg"
+}
+
+
+
+
+###########################3
 request.POST <- 
 
 request.FILES
